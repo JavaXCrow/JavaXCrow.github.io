@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+
+<html>
+
+<!--------------------------------------------------------------------------------------->
+<!-- by M.W. Sloat     ------------------------------------------------------------------>
+<!-- Copyright         ------------------------------------------------------------------>
+<!--------------------------------------------------------------------------------------->
+
+<title> HOME POKER TIMER</title>
+
+<head>
+
+<meta charset="utf-8" />
+
+
+<style type="text/css" >
+
+body {
+	background-color:#222; height:100%; 
+}
+
+
+/* the following prevents selecting and highlighting text */
+* {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+/* the following permits using input on ios device when the above prevents it */
+input {
+    -webkit-user-select: initial;
+    -khtml-user-select: initial;
+    -moz-user-select: initial;
+    -o-user-select: initial;
+    user-select: initial;
+}
+
+nav#menu {
+	position:fixed; width:940px; height:40px; top:0%; background-color:#222;
+	margin-left:50%; left:-470px;
+}
+
+
+	#clockTab {left:10%;}
+	#setupTab {left:30%;}
+	#toolsTab {left:50%;}
+	#aboutTab {left:70%;}
+
+
+		nav#menu>div[id*="Tab"] {
+			position:absolute; width:20%; height:35px; top:5px; background-color:#222;
+			font-size:20px; text-align:center; color:gray;
+			padding-top:1%; border-style:none solid none solid; border-color:#000;
+			cursor:pointer;
+		}
+
+
+#clockContainer {
+		position:fixed; width:100%; left:0%; top:40px; background-color:#000;
+		font-size:25px; text-align:center;
+}
+
+	#hideMenu {
+		position:absolute; height:18px; top:-30px; width:8%; right:2%;  background-color:#000;
+		font-size:16px; text-align:center; overflow:hidden; color:#666;
+		border:2px solid #666; border-radius:10px; cursor:pointer;
+	}
+
+	#timerDisplay {
+		position:absolute; width:96%; top:7%; background-color:#000;
+		margin-left:50%; left:-48%;
+		font-size:950%; font-family:"Lucida Console"; color:gray;
+	}
+
+
+	#centerBlindsDisplay {
+		position:absolute; width:98%; top:50%; background-color:#000;
+		margin-left:50%; left:-49%;
+		font-size:400%; font-family:"Lucida Console"; color:gray;
+	}
+
+		#smallBlindDisplay {
+			position:absolute; top:10%;
+			margin-left:50%; right:55%;
+		}
+
+		#bigBlindDisplay {
+			position:absolute; top:10%; 
+			margin-left:50%; left:5%; 
+		}
+
+	#blindsBreakDisplay {
+		position:absolute; width:98%; top:50%; background-color:#000;
+		margin-left:50%; left:-49%;
+		font-size:500%; font-family:"Lucida Console"; color:gray;
+		display:none;
+	}
+
+	#nextCenterBlindsDisplay {
+		position:absolute; width:98%; bottom:7%; background-color:#000;
+		margin-left:50%; left:-49%;
+		font-size:200%; font-family:"Lucida Console"; color:gray;
+	}
+
+		#nextSmallBlindDisplay {
+			position:absolute; top:10%;
+			margin-left:50%; right:55%;
+		}
+
+		#nextBigBlindDisplay {
+			position:absolute; top:10%;
+			margin-left:50%; left:5%;
+		}
+
+	#nextBlindsBreakDisplay {
+		position:absolute; width:98%; bottom:7%; background-color:#000;
+		margin-left:50%; left:-49%;
+		font-size:350%; font-family:"Lucida Console"; color:gray;
+		display:none;
+	}
+
+	#clockMenu {
+		position:fixed; width:940px; height:40px; bottom:0%; background-color:#222;
+		margin-left:50%; left:-470px;
+	}
+
+		#pauseButton {
+			position:absolute; width:18%; left:5%; height:25px; bottom:15px; background-color:#000;
+			font-size:22px;	color:gray; border:1px solid #444; border-radius:7px;
+			cursor:pointer;
+		}
+
+		#minuteAdjuster {
+			position:absolute; width:18%; left:24%; height:25px; bottom:15px; background-color:#000;
+			font-size:22px;	color:gray; border:1px solid #444; border-radius:7px;
+		}
+
+			#minuteMinus {
+
+				position:absolute; width:15%; left:5%; bottom:3px; background-color:gray;
+				font-size:15px; color:black; border-radius:5px;
+				cursor:pointer;
+			}
+
+			#minutePlus {
+
+				position:absolute; width:15%; right:5%; bottom:3px; background-color:gray;
+				font-size:15px; color:black; border-radius:7px;
+				cursor:pointer;
+			}
+
+		#secondAdjuster {
+			position:absolute; width:18%; left:43%; height:25px; bottom:15px; background-color:#000;
+			font-size:22px;	color:gray; border:1px solid #444; border-radius:7px;
+		}
+
+			#secondMinus {
+
+				position:absolute; width:15%; left:5%; bottom:3px; background-color:gray;
+				font-size:15px; color:black; border-radius:5px;
+				cursor:pointer;
+			}
+
+			#secondPlus {
+
+				position:absolute; width:15%; right:5%; bottom:3px; background-color:gray;
+				font-size:15px; color:black; border-radius:7px;
+				cursor:pointer;
+			}
+
+		#levelAdjuster {
+			position:absolute; width:18%; left:62%; height:25px; bottom:15px; background-color:#000;
+			font-size:22px;	color:gray; border:1px solid #444; border-radius:7px;
+		}
+
+			#levelMinus {
+
+				position:absolute; width:15%; left:5%; bottom:3px; background-color:gray;
+				font-size:15px; color:black; border-radius:5px;
+				cursor:pointer;
+			}
+
+			#levelPlus {
+
+				position:absolute; width:15%; right:5%; bottom:3px; background-color:gray;
+				font-size:15px; color:black; border-radius:7px;
+				cursor:pointer;
+			}
+
+		#resetButton {
+			position:absolute; width:18%; left:81%; height:25px; bottom:15px; background-color:#000;
+			font-size:22px;	color:gray; border:1px solid #444; border-radius:7px;
+			cursor:pointer;
+		}
+
+	#pausedDisplay {
+		position:fixed; top:37.5%; background-color:#433;
+		margin-left:20%; width:60%;
+		text-align:center; font-size:550%; color:#000;
+		border-radius:40px;
+	}
+
+#setupContainer {
+	position:fixed; width:100%; left:0%; top:40px; background-color:#000;
+	font-size:30px; font-family:"Ariel Black"; text-align:center;
+	list-style-type: none;
+	overflow-y:auto; display:none;
+}
+
+	#setupContent {
+		position:absolute; width:900px; margin-left:50%; left:-430px;
+		font-size:25px; text-align:center; color:beige;
+		padding-top:2%;
+	}
+
+		.eventElement {
+			position:relative; width:880px; height:40px; background-color:#aaa;
+			margin-left:50%; left:-440px;
+			font-size:30px; font-family:"Ariel Black"; color:#000;
+			border:4px solid #666; border-radius:15px;
+			margin-top:10px;
+		}
+
+			.currentEventIndicator {
+			position:absolute; width:25px; height:25px; top:6px; background-color:#000;
+			left: 1%;
+			font-size:20px; text-align:center; color:#fff;
+			border:2px solid #000; border-radius:20px;
+			cursor:pointer;
+			}
+
+			.levelLabel {
+				position:absolute; width:5%; left:5.5%; height:75%; top:0%; background-color:#aaa;
+				font-size:120%; font-family:"Ariel Black"; color:#000;
+			}
+
+			.levelTime {
+				position:absolute; width:5%; left:12%; top:5%; background-color:#999;
+				font-size:15px; text-align:center;
+				border:2px solid #777; border-radius:7px;
+				cursor:pointer;
+			}
+
+				.levelTime:hover {
+					background-color:#ccc;			
+			}
+
+			.levelTimeLabel{
+				position:absolute; width:5%; left:12%; top:60%;
+				font-size:15px; text-align:center;
+			}
+
+
+			input.sb, input.bb {
+				position:absolute; background-color:#000; width:25%; height:80%; top:10%;
+				font-size:20px; font-family:"Lucida Console"; text-align:center; color:#bbb;
+				border:2px solid #999; border-radius:20px;
+			}
+
+				.sb {left:21%; }
+
+				.bb {right:23%;}
+
+			.handle {
+				position:absolute; left:47.2%; width:3%; height:80%; top:5%; background-color:#999;
+				font-size:25px; font-family:"Ariel Black"; color:#555;
+				border:2px solid #777; border-radius:7px; cursor:ns-resize;
+			}
+
+				.handle:hover {
+					background-color:#ccc;
+				}
+
+			.addLabel{
+				position:absolute; width:5%; right:11.1%; bottom:33%;  height:40%;
+				font-size:100%; font-family:"Ariel Black";	text-align:center; color:#666;
+			}
+
+			.addLevelButton{
+				position:absolute; width:7%; right:14.2%;  bottom:25%; background-color:#999;
+				font-size:40%; font-family:"Ariel Black";	text-align:center; color:#555;
+				border:2px solid #777; border-radius:9px;
+				cursor:pointer;
+			}
+
+				.addLevelButton:hover {
+					background-color:#ccc;
+				}
+
+			.addBreakButton{
+				position:absolute; width:7%; right:5.5%; bottom:25%; background-color:#999;
+				font-size:40%; font-family:"Ariel Black"; text-align:center; color:#555;
+				border:2px solid #777; border-radius:9px;
+				cursor:pointer;
+			}
+
+				.addBreakButton:hover {
+					background-color:#ccc;
+				}
+
+			.deleteLevelButton{
+				position:absolute; right:1%; width:3%; top:25%; background-color:#999;
+				font-size:12px; font-family:"Ariel Black";	color:#555;
+				border:2px solid #777; border-radius:9px;
+				cursor:pointer;
+			}
+
+				.deleteLevelButton:hover {
+					background-color:#ccc;
+				}
+
+			.breakLabel {
+				position:absolute; width:12%; left:17%; top:10%; background-color:#aaa;
+				font-size:90%;
+			}
+
+			.breakTime {
+				position:absolute; width:8%; right:30%; height:75%; top:3%; background-color:#999;
+				font-size:80%; text-align:center;
+				border:2px solid #777; border-radius:7px;
+			}
+
+				.breakTime:hover {
+					background-color:#ccc;
+				}
+
+			.breakTimeLabel{
+				position:absolute; right:20%; top:15%;
+				font-size:80%;
+			}
+
+			.deleteBreakButton{
+				position:absolute; right:1%; width:3%; top:25%; background-color:#999;
+				font-size:12px; font-family:"Ariel Black";	color:#555;
+				border:2px solid #777; border-radius:9px; cursor:pointer;
+			}
+
+				.deleteBreakButton:hover {
+					background-color:#ccc;
+				}
+
+	#selectColorContainer {
+		position:fixed; width:865px; height:30px; bottom:8px; background-color:#222;
+		margin-left:50%; left:-385px; display:none;
+	}
+
+		#selectColorContainer > div[id^="color"] {
+			position:absolute; height:20px; top:5px;
+			width:38px; border-radius:20px;	border:3px solid #000;
+			text-align:center;	cursor:pointer;
+		}
+			#color00 {background-color : beige; 		left: -2.5%; }	#color01 {background-color : khaki; 		left:  2.5%; }
+			#color02 {background-color : indianred; 	left:  7.5%; } 	#color03 {background-color : crimson;		left: 12.5%; }
+			#color04 {background-color : firebrick;		left: 17.5%; } 	#color05 {background-color : orangered;		left: 22.5%; }
+			#color06 {background-color : tomato; 		left: 27.5%; } 	#color07 {background-color : chocolate;  	left: 32.5%; }
+			#color08 {background-color : goldenrod;		left: 37.5%; } 	#color09 {background-color : olivedrab;		left: 42.5%; }
+			#color10 {background-color : forestgreen;  	left: 47.5%; } 	#color11 {background-color : darkgreen;  	left: 52.5%; }
+			#color12 {background-color : cadetblue; 	left: 57.5%; } 	#color13 {background-color : teal; 			left: 62.5%; }
+			#color14 {background-color : royalblue;		left: 67.5%; } 	#color15 {background-color : midnightblue;	left: 72.5%; }
+			#color16 {background-color : mediumorchid;	left: 77.5%; } 	#color17 {background-color : purple;  		left: 82.5%; }
+			#color18 {background-color : indigo;		left: 87.5%; } 	#color19 {background-color : darkslategray;	left: 92.5%; }
+
+#toolsContainer {
+		position:fixed; width:100%; left:0%; top:40px; background-color:#000;
+		overflow-y:auto; display:none;
+}
+
+	#toolsContent {
+		position:absolute; width:900px;	margin-left:50%; left:-430px;
+		font-size:25px; text-align:center; color:beige;
+	}
+
+
+
+#aboutContainer {
+		position:fixed; width:100%; left:0%; top:40px; background-color:#000;
+		overflow-y:auto; display:none;
+}
+
+	#aboutContent {
+		position:absolute; width:900px;	margin-left:50%; left:-430px;
+		font-size:25px; text-align:center; color:beige;
+	}
+
+
+
+</style>
+
+</head>
+<body>
+
+<!-- comments? -->
+
+<audio id="newLevelSound" preload="auto"  >
+  <source  src="teaspoonClinks.mp3" type="audio/mpeg" />
+  <source  src="teaspoonClinks.wav" />
+</audio>
+
+<nav id="menu">
+	<div id="clockTab" data-state="0">CLOCK</div>
+	<div id="setupTab" data-state="0">SETUP</div>
+	<div id="toolsTab" data-state="0">TOOLS</div>
+	<div id="aboutTab" data-state="0">ABOUT</div>
+</nav>
+
+
+<div id="clockContainer">
+	<div id="hideMenu">HIDE MENU</div>
+	<div id="timerDisplay">00:00</div>
+
+	<div id="centerBlindsDisplay">-
+		<div id="smallBlindDisplay">0</div>
+		<div id="bigBlindDisplay">0</div>
+	</div>
+	<div id="blindsBreakDisplay">BREAK</div>
+
+	<div id="nextCenterBlindsDisplay">-
+		<div id="nextSmallBlindDisplay">0</div>
+		<div id="nextBigBlindDisplay">0</div>
+	</div>
+	<div id="nextBlindsBreakDisplay">BREAK</div>
+
+	<div id = "clockMenu">
+		<div id = "pauseButton">PLAY</div>
+		<div id = "minuteAdjuster">minutes
+			<div id = "minuteMinus">-</div>
+			<div id = "minutePlus">+</div>
+		</div>
+
+		<div id = "secondAdjuster">seconds
+			<div id = "secondMinus">-</div>
+			<div id = "secondPlus">+</div>
+		</div>
+		<div id = "levelAdjuster">level
+			<div id = "levelMinus">-</div>
+			<div id = "levelPlus">+</div>
+		</div>
+		<div id = "resetButton">RESET TIMER</div>
+	</div>
+	<div id="pausedDisplay">PAUSED</div>
+</div>
+
+
+<div id="setupContainer">
+	<div id="setupContent">
+		<li class = "eventElement" data-type="level">
+			<div class="currentEventIndicator">x</div>
+			<div class="levelLabel">1</div>
+			<input class="levelTime" maxlength="3" tabindex="-1">
+			<div class = "levelTimeLabel">minutes</div>
+			<input class="sb">
+			<div class="handle">&#9617 </div>
+			<input class="bb">
+			<div class="addLabel">&#8681 </div>
+			<div class="addLevelButton">LEVEL</div>
+			<div class="addBreakButton">BREAK</div>
+			<div class="deleteLevelButton">X</div>
+		</li>
+		<li class = "eventElement" data-type="break">
+			<div class="currentEventIndicator"></div>
+			<div class="breakLabel">BREAK</div>
+			<div class="handle">&#9617 </div>
+			<input class="breakTime" maxlength="2" tabindex="-1">
+			<div class="breakTimeLabel">minutes</div>
+			<div class="deleteBreakButton">X</div>
+		</li>
+	</div>
+
+</div>
+
+
+
+<div id="toolsContainer">
+	<div id="toolsContent">
+		<br>
+		<br>
+		<p>In The Works: <p><br>
+		<p>Payout Calculator<p>
+		<p>Chopping Calculator<p>
+		<p>Tournament Rules<p>
+		<p>and More ???<p>
+	</div>
+</div>
+
+
+<div id="aboutContainer">
+	<div id="aboutContent">
+		<br><br>
+		<p>Welcome!</p><br><br>
+		<p>This poker timer is practical, versatile, and user friendly.</p><br><br>
+		<p>Good Luck!</p><br>
+	</div>
+</div>
+
+<div id="selectColorContainer">
+		<div id="color00"></div>
+		<div id="color01"></div> <div id="color02"> </div> <div id="color03"> </div> <div id="color04"></div>
+		<div id="color05"></div> <div id="color06"> </div> <div id="color07"> </div> <div id="color08"></div>
+		<div id="color09"></div> <div id="color10"> </div> <div id="color11"> </div> <div id="color12"></div>
+		<div id="color13"></div> <div id="color14"> </div> <div id="color15"> </div> <div id="color16"></div>
+		<div id="color17"></div> <div id="color18"> </div> <div id="color19"> </div>
+</div>
+
+
+<!--  ===================================================================================  	-->
+<!--  ----------------------------------------------JQUERY: CORE 2.0.0; UI 1.10.3 -----		-->
+
+<!-- comments? -->
+
+
+<script src="http://code.jquery.com/jquery-3.4.1.min.js";></script>
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+<script>
+
+var pause = 1;
+var min = 0;
+var sec = 0;
+var levelTime = 0;
+var resetClock = 1;
+var selectColor = "beige";
+var breakHidden = 0;
+
+
+ $(document).ready(function() {
+
+ 	var deviceAgent = navigator.userAgent.toLowerCase();
+	var isIPAD = deviceAgent.match(/(ipad)/);
+
+ 	$("#clockTab").click(function(){
+		$("#clockContainer").show(); $('#selectColorContainer').hide();
+		$('#clockTab').attr("data-state", "1").css({'border-style': 'solid solid none solid', 'color':'beige', 'background-color':'#000'});
+		$("#setupContainer,#toolsContainer, #aboutContainer").hide();
+		$('#setupTab, #toolsTab,#aboutTab').attr("data-state", "0").css({'border-style': 'none solid none solid', 'color':'gray', 'background-color':'#222'});
+		updateTimerDisplay();
+		});
+
+	$("#setupTab").click(function(){
+		$("#setupContainer").show(); $('#selectColorContainer').show();
+		$('#setupTab').attr("data-state", "1").css({'border-style': 'solid solid none solid', 'color':'beige', 'background-color':'#000'});
+		$("#clockContainer, #toolsContainer, #aboutContainer").hide();
+		$('#clockTab, #toolsTab, #aboutTab').attr("data-state", "0").css({'border-style': 'none solid none solid', 'color':'gray', 'background-color':'#222'});
+		updateTimerDisplay();
+	});
+
+
+	$("#toolsTab").click(function(){
+		$("#toolsContainer").show();  $('#selectColorContainer').hide();
+		$('#toolsTab').attr("data-state", "1").css({'border-style': 'solid solid none solid', 'color':'beige', 'background-color':'#000'});
+		$("#clockContainer, #setupContainer, #aboutContainer").hide();
+		$('#clockTab, #setupTab, #aboutTab').attr("data-state", "0").css({'border-style': 'none solid none solid', 'color':'gray', 'background-color':'#222'});
+		updateTimerDisplay();
+		});
+
+
+	$("#aboutTab").click(function(){
+		$("#aboutContainer").show(); $('#selectColorContainer').hide();
+		$('#aboutTab').attr("data-state", "1").css({'border-style': 'solid solid none solid', 'color':'beige', 'background-color':'#000'});
+		$("#clockContainer, #setupContainer, #toolsContainer").hide();
+		$('#clockTab, #setupTab, #toolsTab').attr("data-state", "0").css({'border-style': 'none solid none solid', 'color':'gray', 'background-color':'#222'});
+		updateTimerDisplay();
+		});
+
+
+	$("#hideMenu").click( function(){
+		$("#menu").toggle();
+		if ($("#menu").is(":visible")){
+			$("#hideMenu").text("HIDE MENU").css('top', '-30px');;
+
+			if (isIPAD){
+					$('#clockContainer').css({'height': '87.5%'});
+			}else{
+					$('#clockContainer').css({'height': '85%'});
+			};
+
+			$('#clockContainer').css({'top': '40px'});
+			$('#clockMenu').show();
+		}
+		else {
+			$("#hideMenu").text("SHOW MENU").css('top', '10px');;
+			$("#clockContainer").height('100%').css({'top':'0px'});
+			$('#clockMenu').hide();
+		}
+	});
+
+
+	$('#pauseButton').click(function(){
+
+		if (pause == 1){
+			pause = 0; $('#pauseButton').text("PAUSE"); $('#pausedDisplay').hide();
+		}else{
+			pause = 1; $('#pauseButton').text("PLAY"); $('#pausedDisplay').show();
+		};
+
+	});
+
+
+
+	$('#minuteMinus').click(function(){
+
+		min = min - 1;
+
+		if (min < 0){min = levelTime;};
+
+		updateTimerDisplay();
+
+	});
+
+	$('#minutePlus').click(function(){
+
+		min = min + 1;
+
+		if (min > levelTime){min = 0;};
+
+		updateTimerDisplay();
+
+	});
+
+
+	$('#secondMinus').click(function(){
+
+		sec = sec - 1;
+
+		if (sec < 0){sec = 59;};
+
+		updateTimerDisplay();
+
+	});
+
+	$('#secondPlus').click(function(){
+
+		sec = sec + 1;
+
+		if (sec > 59){sec = 0;};
+
+		updateTimerDisplay();
+
+	});
+
+
+	$('#levelMinus').click(function(){
+
+		$(".currentEventIndicator:contains('x')").parents().prev().children(".currentEventIndicator").click();
+		$('#resetButton').click();
+
+		updateTimerDisplay();
+
+	});
+
+	$('#levelPlus').click(function(){
+
+		$(".currentEventIndicator:contains('x')").parents().next().children(".currentEventIndicator").click();
+		$('#resetButton').click();
+
+		updateTimerDisplay();
+
+	});
+
+
+
+
+	$("#setupContent").sortable( { items: "> li", containment:"parent", axis:"y", scroll:false, tolerance:"pointer", handle:".handle", stop:function(){updateLevels(); resetClock = 0; $('#resetButton').click() } });
+
+
+	$(".currentEventIndicator").click(function(){
+		$(".currentEventIndicator").text("").siblings(".levelLabel, .breakLabel").css( "background-color", "#aaa" ).parent().css( "background-color", "#aaa" );
+		$(".deleteLevelButton, .deleteBreakButton").show();
+		$(this).text("x").siblings(".deleteLevelButton, .deleteBreakButton").hide().parent().css( "background-color", selectColor );
+		$(this).siblings(".levelLabel, .breakLabel").css( "background-color", selectColor );
+		$("#resetButton").click();
+	});
+
+
+
+	function updateLevels(){
+		var counter = 0;
+		$("li[data-type='level']").each(function(){
+			counter++;
+			$(this).find(".levelLabel").text(counter);
+		});
+	}//end updateLevels
+
+
+	$(".levelTime").keyup(function(){
+		var	timeVal = $(this).val();
+		var thisIndex = $(this).parents().index();
+				$("li[data-type='level']").each(function(){
+					if ( $(this).index() > thisIndex ) {
+						$(this).find(".levelTime").val(timeVal);
+					};
+				});
+	});
+
+
+	$(".levelTime").mousedown(function(){
+		var thisIndex = $(this).parents().index();
+				$("li[data-type='level']").each(function(){
+					if ( $(this).index() >= thisIndex ) {
+						$(this).find(".levelTime").val("");
+					};
+				});
+	});
+
+	$(".breakTime").mousedown(function(){
+		$(this).val("");
+	});
+
+
+	$(".sb, .bb").keyup(function(){
+		resetClock = 0; $('#resetButton').click();
+
+
+	});
+
+
+	$(".addLevelButton").click(function(){
+		var index = $(this).parent().index();
+		var timeVal = $(this).siblings(".levelTime").val()
+		$("#setupContainer li:eq("+index+")").after($(this).parent().clone(true,true));
+		index=index+1;
+		$("#setupContainer li:eq("+index+") input").val("");
+		$("#setupContainer li:eq("+index+") .levelTime" ).val(timeVal);
+		$("#setupContainer li:eq("+index+")").css( "background-color", "#aaa" );
+		$("#setupContainer li:eq("+index+") .levelLabel").css( "background-color", "#aaa" );
+		$("#setupContainer li:eq("+index+") .currentEventIndicator").text("");
+		$("#setupContainer li:eq("+index+") .deleteLevelButton").show();
+		if (isIPAD) {}else{$("#setupContainer li:eq("+index+") input.sb").focus()};
+		updateLevels(); resetClock = 0; $('#resetButton').click();
+	});
+
+
+	$(".deleteLevelButton").click(function(){
+
+			var counter=0; $("li[data-type='level']").each(function(){ counter++;});
+			if (counter > 1){
+				$(this).parent().hide(500, function(){ $(this).remove(); updateLevels(); resetClock = 0; $('#resetButton').click(); });
+			};
+
+	});
+
+
+	$(".addBreakButton").click(function(){
+		var counter=0; $("li[data-type='break']").each(function(){ counter++;});
+		var index = $(this).parent().index();
+		if (counter < 2 && $("li[data-type='break']").is(":hidden")){
+			$("li[data-type='break']").show().insertAfter("#setupContainer li:eq("+index+")");
+			if (isIPAD) {}else{$(".breaktime").focus()};
+
+		}
+		else {
+			$("#setupContainer li:eq("+index+")").after($("li[data-type='break']").first().clone(true,true));
+			index=index+1;
+			$("#setupContainer li:eq("+index+")").css( "background-color", "#aaa" );
+			$("#setupContainer li:eq("+index+")").find('.breakLabel').css( "background-color", "#aaa" );
+			$("#setupContainer li:eq("+index+")").find('.currentEventIndicator').text("");
+			$("#setupContainer li:eq("+index+")").find('.deleteBreakButton').show();
+			$("#setupContainer li:eq("+index+")").find('.breakTime').val("");
+			if (isIPAD){}else{$("#setupContainer li:eq("+index+")").find('.breakTime').focus()};
+		};
+		resetClock = 0; $('#resetButton').click();
+	});
+
+
+	$(".deleteBreakButton").click(function(){
+		var counter=0; $("li[data-type='break']").each(function(){ counter++;});
+		if (counter > 1){
+			$(this).parent().hide(500, function(){ $(this).remove(); resetClock = 0; $('#resetButton').click();});
+		}
+		else{
+			$(this).siblings(".breakTime").val("").parent().hide(500, function(){ $(this).insertBefore("#setupContainer li:eq(0)"); resetClock = 0; $('#resetButton').click()});
+		};
+	});
+
+
+	$('#selectColorContainer div[id^="color"]').click(function(){
+
+		selectColor = $(this).css('background-color');
+		$('#selectColorContainer div[id^="color"]').text("");
+		$(this).text("X");
+		$(".currentEventIndicator, #centerBlindsDisplay, #timerDisplay, #blindsBreakDisplay").css("color",selectColor);
+		$(".currentEventIndicator:contains('x')").siblings(".levelLabel, .breakLabel").css("background-color", selectColor).parent().css("background-color", selectColor);
+
+	});
+
+
+	//The resize event is sent to the window element when the size of the browser window changes 
+	//(not sure if this is needed though)
+	$(window).resize(function(){
+		if (isIPAD){
+			$('#clockContainer, #setupContainer, #toolsContainer, #aboutContainer').css({'height': '87.5%'});
+		}else{
+			$('#clockContainer, #setupContainer, #toolsContainer, #aboutContainer').css({'height': '85%'});
+		};
+	});
+
+
+	$('#resetButton').click(function(){
+
+		var eventType = $(".currentEventIndicator:contains('x')").parents().data('type');
+		if ( eventType == "level"  ){setLevel();}else{setBreak();};
+
+
+		var nextEventType = $(".currentEventIndicator:contains('x')").parents().next().data('type');
+		if ( nextEventType == "level"  ){setNextLevel();}else{setNextBreak();};
+
+	});
+
+
+	function setLevel(){
+
+		$('#blindsBreakDisplay').hide();
+
+		levelTime = $(".currentEventIndicator:contains('x')").siblings('.levelTime').val();
+		if (resetClock == 1 ) {min = levelTime; sec = 0; updateTimerDisplay();};
+
+		var smallBlind = $(".currentEventIndicator:contains('x')").siblings('.sb').val();
+		$('#smallBlindDisplay').text(smallBlind);
+
+		var bigBlind = $(".currentEventIndicator:contains('x')").siblings('.bb').val();
+		$('#bigBlindDisplay').text(bigBlind);
+
+		resetClock = 1;
+
+	}
+
+
+	function setBreak(){
+
+		var breakTime = $(".currentEventIndicator:contains('x')").siblings('.breakTime').val();
+		if (resetClock == 1){min = breakTime; sec = 0; updateTimerDisplay();};
+
+		$('#smallBlindDisplay').text("");
+		$('#bigBlindDisplay').text("");
+
+		$('#blindsBreakDisplay').show();
+
+		resetClock = 1;
+
+	}
+
+
+	function setNextLevel(){
+
+		$('#nextBlindsBreakDisplay').hide();
+
+		var index =  $(".currentEventIndicator:contains('x')").parents().index();
+
+
+		var nextSmallBlind = $(".eventElement").eq(index+1).children('.sb').val();
+		var nextBigBlind = $(".eventElement").eq(index+1).children('.bb').val();
+
+		$('#nextSmallBlindDisplay').text(nextSmallBlind);
+		$('#nextBigBlindDisplay').text(nextBigBlind);
+
+	}
+
+	function setNextBreak(){
+
+		$('#nextSmallBlindDisplay').text("");
+		$('#nextBigBlindDisplay').text("");
+
+		$('#nextBlindsBreakDisplay').show();
+
+	}
+
+
+	function timer(){
+
+		if (pause == "1"){return;};
+
+		sec = sec - 1;
+
+		if (sec < 0 && min > 0){
+			sec = 59; min = min -1;
+		};
+
+
+		if (sec < 0 && min < 1){
+
+			newLevelSound.play();
+
+			$(".currentEventIndicator:contains('x')").parents().next().children(".currentEventIndicator").click();
+			$('#resetButton').click();
+		};
+
+		updateTimerDisplay();
+
+	}//end timer
+
+
+
+	function updateTimerDisplay(){
+
+		minDisplay = min.toString();
+		secDisplay = sec.toString();
+
+		if (minDisplay.length == 1){minDisplay = "0" + minDisplay};
+		if (secDisplay.length == 1){secDisplay = "0" + secDisplay};
+
+		$('#timerDisplay').text( minDisplay + ":" + secDisplay);
+
+
+		if ( $("#clockContainer").is(":visible") ){
+			$('#clockTab').text( "CLOCK");
+		} else {
+
+
+			var level = $(".currentEventIndicator:contains('x')").siblings('.levelLabel').text();
+
+
+                if (level == "") {
+
+                    $('#clockTab').text("Break /  "+ minDisplay + ":" + secDisplay);
+
+                } else {
+
+					$('#clockTab').text( "L-" +	level + " /  "+ minDisplay + ":" + secDisplay);
+                }
+
+		}
+	}
+
+
+		// INITIAL SETTINGS: IN AN ANONYMOUS FUNCTION: THIS SHOULD BE END OF SCRIPT
+	(function(){
+
+		$('#clockTab').css({'background-color':'#000' ,'color':'beige', 'border-style':'solid solid none solid'}).attr("data-state", "0");
+
+		if (isIPAD){
+			$('#clockContainer, #setupContainer, #toolsContainer, #aboutContainer').css({'height': '87.5%'});
+		}else{
+		    $('#clockContainer, #setupContainer, #toolsContainer, #aboutContainer').css({'height': '85%'});
+		};
+
+
+		$("#pausedDisplay").css({ opacity: 0.85 });
+		$("#color13").text("X").click();
+		$(".eventElement:nth-of-type(1) .eventElement:nth-of-type(1) .levelLabel").css({'background-color':selectColor});
+		$(".eventElement:nth-of-type(1) .deleteLevelButton").hide();
+		$(".currentEventIndicator, div[data-state='1'], #timerDisplay, #centerBlindsDisplay, #blindsBreakDisplay").css({'color':selectColor});
+		$(".levelTime:first").val('15');  // set the time of first level to a default value
+		$(".breakTime:first").val('10');  // set the time of first break to a default value
+		$(".addLevelButton:last").click();  
+		$(".addLevelButton:last").click();  
+		$(".addLevelButton:last").click();  
+		$(".addLevelButton:last").click();  
+
+		levelTime = $('.levelTime:first').val(); min = levelTime; updateTimerDisplay();
+
+		setInterval(function(){timer()},1000);  
+
+	}());
+
+
+	// INITIAL SETTINGS: IN AN ANONYMOUS FUNCTION: THIS SHOULD BE END OF SCRIPT
+
+ });
+
+</script>
+
+<!--------------------------------------------------JQUERY: CORE 2.0.0; UI 1.10.3 ----	-->
+<!--  ================================================================================	-->
+
+</body>
+</html>
